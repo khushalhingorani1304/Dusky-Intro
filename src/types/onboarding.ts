@@ -4,6 +4,21 @@ export interface SelectOption {
   badge?: string;
 }
 
+export interface WelcomeFeatureConfig {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface WelcomeConfig {
+  greeting: string;
+  subheading: string;
+  whatsNextTitle: string;
+  whatsNextDescription: string;
+  features: WelcomeFeatureConfig[];
+}
+
 export interface TeamConfig {
   title: string;
   subtitle: string;
@@ -18,6 +33,7 @@ export interface ChallengeConfig {
 }
 
 export interface AdminConfig {
+  welcome: WelcomeConfig;
   company: TeamConfig;
   challenge: ChallengeConfig;
 }

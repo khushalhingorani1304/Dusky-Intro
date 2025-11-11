@@ -1,17 +1,39 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import type { AdminConfig, TeamConfig, ChallengeConfig } from '../types/onboarding';
+import type { AdminConfig, TeamConfig, ChallengeConfig, WelcomeConfig } from '../types/onboarding';
 
 const DEFAULT_CONFIG: AdminConfig = {
+  welcome: {
+    greeting: "Hey there! I'm Dusky.",
+    subheading: "I'm your new AI content assistant. I'm here to help you create, research, and brainstorm amazing content, faster than ever.",
+    whatsNextTitle: "What’s next",
+    whatsNextDescription: "We’ll gather a few quick details to personalize your workspace, then spin up your first canvas.",
+    features: [
+      {
+        id: 'feature-content',
+        title: 'Content Creation',
+        description: 'Generate social posts, scripts, long-form articles, and more in minutes.',
+        icon: 'document-text',
+      },
+      {
+        id: 'feature-research',
+        title: 'Deep Research',
+        description: 'Surface the latest insights, organize sources, and summarize findings instantly.',
+        icon: 'magnifying-glass',
+      },
+    ],
+  },
   company: {
     title: 'What best describes your company?',
     subtitle: 'This helps us customize your experience in Dusky.',
     options: [
-      { id: 'automation-agency', label: 'Automation agency', badge: 'A' },
-      { id: 'marketing-consultancy', label: 'Marketing agency/consultancy', badge: 'B' },
-      { id: 'saas', label: 'Software as a service', badge: 'C' },
-      { id: 'ecommerce', label: 'Ecommerce', badge: 'D' },
-      { id: 'education', label: 'Education', badge: 'E' },
-      { id: 'company-other', label: 'Other', badge: 'F' },
+      { id: 'content-creation', label: 'Content creation studio', badge: 'A' },
+      { id: 'marketing-agency', label: 'Marketing agency/ Advertising agency', badge: 'B' },
+      { id: 'advertising-agency', label: 'Advertising agency', badge: 'C' },
+      { id: 'automation-agency', label: 'Automation agency', badge: 'D' },
+      { id: 'saas', label: 'Software as a service', badge: 'E' },
+      { id: 'ecommerce', label: 'Ecommerce', badge: 'F' },
+      { id: 'education', label: 'Education', badge: 'G' },
+      { id: 'company-other', label: 'Other', badge: 'H' },
     ],
   },
   challenge: {
@@ -30,6 +52,7 @@ const DEFAULT_CONFIG: AdminConfig = {
 
 interface OnboardingConfigContextValue {
   config: AdminConfig;
+  updateWelcomeConfig: (config: WelcomeConfig) => void;
   updateCompanyConfig: (config: TeamConfig) => void;
   updateChallengeConfig: (config: ChallengeConfig) => void;
   resetConfig: () => void;
@@ -43,7 +66,14 @@ export const OnboardingConfigProvider: React.FC<{ children: React.ReactNode }> =
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        return JSON.parse(stored) as AdminConfig;
+        const parsed = JSON.parse(stored) as Partial<AdminConfig>;
+        return {
+          ...DEFAULT_CONFIG,
+          ...parsed,
+          welcome: { ...DEFAULT_CONFIG.welcome, ...(parsed?.welcome ?? {}) },
+          company: { ...DEFAULT_CONFIG.company, ...(parsed?.company ?? {}) },
+          challenge: { ...DEFAULT_CONFIG.challenge, ...(parsed?.challenge ?? {}) },
+        };
       } catch (error) {
         console.warn('Failed to parse onboarding config from storage', error);
       }
@@ -58,6 +88,7 @@ export const OnboardingConfigProvider: React.FC<{ children: React.ReactNode }> =
   const value = useMemo<OnboardingConfigContextValue>(
     () => ({
       config,
+      updateWelcomeConfig: (welcomeConfig) => setConfig((prev) => ({ ...prev, welcome: welcomeConfig })),
       updateCompanyConfig: (companyConfig) => setConfig((prev) => ({ ...prev, company: companyConfig })),
       updateChallengeConfig: (challengeConfig) => setConfig((prev) => ({ ...prev, challenge: challengeConfig })),
       resetConfig: () => setConfig(DEFAULT_CONFIG),

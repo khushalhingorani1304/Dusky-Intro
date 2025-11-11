@@ -1,6 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { RectangleStackIcon } from '@heroicons/react/24/outline';
-import { SelectableCard } from '../components/SelectableCard';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PrimaryButton } from '../components/PrimaryButton';
 import gsap from 'gsap';
 import type { SelectOption } from '../types/onboarding';
@@ -30,26 +28,16 @@ export const ChallengeSelectionScreen: React.FC<ChallengeSelectionScreenProps> =
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const elements = [
-        '.challenge-logo',
-        '.challenge-heading',
-        '.challenge-subheading',
+        '.challenge-progress',
+        '.challenge-header',
         '.challenge-grid',
-        '.challenge-button'
+        '.challenge-actions',
       ];
 
       gsap.fromTo(
         elements,
-        { 
-          autoAlpha: 0, 
-          y: 30 
-        },
-        { 
-          autoAlpha: 1, 
-          y: 0, 
-          duration: 0.6, 
-          stagger: 0.1,
-          ease: 'power3.out' 
-        }
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out' }
       );
     }, containerRef);
 
@@ -65,53 +53,58 @@ export const ChallengeSelectionScreen: React.FC<ChallengeSelectionScreenProps> =
   };
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center min-h-screen bg-dusky-flow">
-      <div className="w-full flex justify-center pt-8 pb-[1.6rem]">
-        <div className="flex gap-[0.4rem]" style={{ width: '50%', maxWidth: '25.2rem' }}>
-          {Array.from({ length: progressTotal }).map((_, index) => (
-            <div
-              key={index}
-              className={`h-[0.3rem] flex-1 rounded-full ${
-                index < progressActive ? 'bg-purple-600' : 'bg-gray-200'
-              }`}
-            />
-          ))}
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.08),transparent_60%)]" />
+      <div
+        ref={containerRef}
+        className="relative w-full max-w-5xl rounded-[36px] border border-white/45 bg-white/90 px-10 py-14 shadow-[0_30px_70px_-32px_rgba(63,55,146,0.32)] backdrop-blur-2xl md:px-16"
+      >
+        <div className="challenge-progress flex items-center justify-between">
+          <span className="w-12" />
+          <span className="w-12" />
         </div>
-      </div>
-      <div className="max-w-[50.4rem] w-full px-6 flex-1 flex items-center -mt-[1.3rem]">
-        <div className="w-full">
-          <div className="flex justify-start mb-8 challenge-logo">
-            <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-              <RectangleStackIcon className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          
-          <h2 className="text-3xl font-bold text-gray-900 mb-2 challenge-heading">
-            {title}
-          </h2>
-          <p className="text-lg text-gray-600 mb-6 challenge-subheading">
-            {subtitle}
-          </p>
-          
-          <div className="grid grid-cols-2 gap-3 mb-8 challenge-grid">
-            {options.map((challenge) => (
-              <SelectableCard
+
+        <div className="challenge-header mt-10 text-center space-y-3">
+          <h2 className="text-3xl font-bold text-[#1A1A1A] md:text-4xl">{title}</h2>
+          <p className="text-base text-[#6F6C8F]">{subtitle}</p>
+        </div>
+
+        <div className="challenge-grid mt-12 grid gap-4 md:grid-cols-2">
+          {options.map((challenge) => {
+            const isSelected = selectedChallenges.includes(challenge.id);
+            return (
+              <button
                 key={challenge.id}
-                title={challenge.label}
-                isSelected={selectedChallenges.includes(challenge.id)}
+                type="button"
                 onClick={() => handleToggleChallenge(challenge.id)}
-              />
-            ))}
-          </div>
-          
-          <div className="challenge-button">
-            <PrimaryButton
-              onClick={() => onNext(selectedChallenges)}
-              disabled={selectedChallenges.length === 0}
-            >
-              Next
-            </PrimaryButton>
-          </div>
+                className={`group flex items-center justify-between rounded-[24px] border bg-white/90 px-6 py-5 text-left text-base font-semibold text-[#1F1B3A] transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#6C4DF5]/35 ${
+                  isSelected
+                    ? 'border-2 border-[#6C4DF5] shadow-[0_22px_44px_-28px_rgba(108,77,245,0.6)]'
+                    : 'border-[#E0DEF5] shadow-[0_20px_40px_-30px_rgba(104,97,181,0.25)] hover:-translate-y-1 hover:border-[#6C4DF5] hover:shadow-[0_26px_56px_-32px_rgba(108,77,245,0.55)]'
+                }`}
+              >
+                <span>{challenge.label}</span>
+                <span
+                  className={`flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold ${
+                    isSelected ? 'bg-[#6C4DF5] text-white' : 'bg-[#F2F0FF] text-[#6C4DF5]'
+                  }`}
+                >
+                  {isSelected ? '✓' : '+'}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="challenge-actions mt-12 flex justify-center">
+          <PrimaryButton
+            onClick={() => onNext(selectedChallenges)}
+            disabled={selectedChallenges.length === 0}
+            className="px-10"
+          >
+            Next
+          </PrimaryButton>
         </div>
       </div>
     </div>

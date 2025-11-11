@@ -38,31 +38,26 @@ const ReferralSelectionScreen: React.FC<ReferralSelectionScreenProps> = ({
   progressTotal = 12,
 }) => {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-dusky-flow">
-      <div className="w-full flex justify-center pt-8 pb-[1.6rem]">
-        <div className="flex gap-[0.4rem]" style={{ width: '50%', maxWidth: '25.2rem' }}>
-          {Array.from({ length: progressTotal }).map((_, index) => (
-            <div
-              key={index}
-              className={`h-[0.3rem] flex-1 rounded-full ${
-                index < progressActive ? 'bg-purple-600' : 'bg-gray-200'
-              }`}
-            />
-          ))}
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.08),transparent_60%)]" />
+      <div className="relative w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-14 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="text-sm font-semibold text-[#6C4DF5] transition hover:text-[#4A32DD]"
+          >
+            ← Back
+          </button>
+          <span className="w-12" />
         </div>
-      </div>
 
-      <div className="w-full max-w-5xl rounded-[32px] bg-white p-8 shadow-xl shadow-purple-100">
-        <button onClick={onBack} className="text-sm font-medium text-purple-500 hover:text-purple-700">
-          ← Back
-        </button>
-
-        <div className="mt-6 text-center space-y-3">
+        <div className="mt-10 text-center space-y-3">
           <h1 className="text-3xl font-bold text-gray-900">How did you hear about us?</h1>
           <p className="text-sm text-gray-500">Optional (but appreciated)</p>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {REFERRAL_OPTIONS.map((option) => {
             const isSelected = selectedReferrals.includes(option.id);
             return (
@@ -70,17 +65,19 @@ const ReferralSelectionScreen: React.FC<ReferralSelectionScreenProps> = ({
                 key={option.id}
                 onClick={() => onToggle(option.id)}
                 className={`rounded-3xl border-2 p-6 text-left transition hover:-translate-y-1 hover:shadow-lg ${
-                  isSelected ? 'border-purple-500 bg-purple-50 shadow-md' : 'border-gray-200 bg-white shadow-sm'
+                  isSelected
+                    ? 'border-[#6C4DF5] bg-[#F5F2FF] shadow-[0_20px_40px_-28px_rgba(108,77,245,0.5)]'
+                    : 'border-[#E0DEF5] bg-white shadow-sm'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-3xl">{option.icon}</span>
                   <span
                     className={`flex h-6 w-6 items-center justify-center rounded-md border text-xs font-bold ${
-                      isSelected ? 'border-purple-600 bg-purple-600 text-white' : 'border-gray-300 bg-white text-gray-400'
+                      isSelected ? 'border-[#6C4DF5] bg-[#6C4DF5] text-white' : 'border-[#E0DEF5] bg-white text-[#B5B2D9]'
                     }`}
                   >
-                    {isSelected ? '✓' : ' '}
+                    {isSelected ? '✓' : '+'}
                   </span>
                 </div>
                 <p className="mt-4 text-sm font-semibold text-gray-900">{option.label}</p>
@@ -89,8 +86,8 @@ const ReferralSelectionScreen: React.FC<ReferralSelectionScreenProps> = ({
           })}
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <PrimaryButton onClick={() => onNext(selectedReferrals)} className="px-8">
+        <div className="mt-12 flex justify-center">
+          <PrimaryButton onClick={() => onNext(selectedReferrals)} className="px-10">
             Done
           </PrimaryButton>
         </div>

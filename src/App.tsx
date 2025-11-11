@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import gsap from 'gsap';
@@ -21,6 +21,7 @@ import SigninPage from './pages/SigninPage';
 type Step =
   | 'welcome'
   | 'intent'
+  | 'companyEarly'
   | 'teamPrimaryRole'
   | 'teamSize'
   | 'educationRole'
@@ -28,7 +29,6 @@ type Step =
   | 'studentDetail'
   | 'goals'
   | 'referral'
-  | 'teamSecondary'
   | 'name'
   | 'challenge'
   | 'loading';
@@ -64,7 +64,7 @@ const OnboardingFlow = () => {
   const { config } = useOnboardingConfig();
   const [step, setStep] = useState<Step>('welcome');
   const [intent, setIntent] = useState<string | null>(null);
-  const [teamSecondary, setTeamSecondary] = useState<string | null>(null);
+  const [company, setCompany] = useState<string | null>(null);
   const [teamSize, setTeamSize] = useState<string | null>(null);
   const [teamSizeBackStep, setTeamSizeBackStep] = useState<Step>('teamPrimaryRole');
   const [educationRoleChoice, setEducationRoleChoice] = useState<string | null>(null);
@@ -74,6 +74,18 @@ const OnboardingFlow = () => {
   const [referrals, setReferrals] = useState<string[]>([]);
   const [name, setName] = useState('');
   const [challenges, setChallenges] = useState<string[]>([]);
+  const [companyCompletedEarly, setCompanyCompletedEarly] = useState(false);
+
+  useEffect(() => {
+    if (step === 'companyEarly' && intent !== 'work') {
+      setCompanyCompletedEarly(false);
+      if (intent === 'education') {
+        setStep('educationRole');
+      } else if (intent) {
+        setStep('teamPrimaryRole');
+      }
+    }
+  }, [step, intent]);
 
   const PROGRESS_TOTAL = 9;
   const isEducatorFlow = intent === 'education' && educationRoleChoice === 'educator';
@@ -81,7 +93,7 @@ const OnboardingFlow = () => {
   const handleComplete = () => {
     console.log('Onboarding complete!', {
       intent,
-      teamSecondary,
+      company,
       teamSize,
       educationRole: educationRoleChoice,
       educatorType,
@@ -99,18 +111,26 @@ const OnboardingFlow = () => {
     : config.challenge.title;
 
   const renderStep = () => {
+    const companyEarlyProgress = 3;
     const teamSizeProgress = isEducatorFlow ? 5 : 4;
     const goalsProgress =
       intent === 'education' ? (isEducatorFlow ? 6 : 5) : 5;
     const referralProgress =
       intent === 'education' ? (isEducatorFlow ? 7 : 6) : 6;
-    const companyProgress =
-      intent === 'education' ? (isEducatorFlow ? 8 : 7) : 7;
-    const challengeProgress = companyProgress + 1;
+    const challengeProgress = referralProgress + 1;
 
     switch (step) {
       case 'welcome':
-        return <WelcomeScreen onNext={() => setStep('name')} />;
+        return (
+          <WelcomeScreen
+            onNext={() => setStep('name')}
+            greeting={config.welcome.greeting}
+            subheading={config.welcome.subheading}
+            whatsNextTitle={config.welcome.whatsNextTitle}
+            whatsNextDescription={config.welcome.whatsNextDescription}
+            features={config.welcome.features}
+          />
+        );
       case 'intent':
         return (
           <IntentSelectionScreen
@@ -119,8 +139,16 @@ const OnboardingFlow = () => {
               if (selected) {
                 setIntent(selected);
                 if (selected === 'education') {
+                setCompanyCompletedEarly(false);
+                setCompany(null);
                   setStep('educationRole');
+                } else if (selected === 'work') {
+                  setCompanyCompletedEarly(false);
+                  setCompany(null);
+                  setStep('companyEarly');
                 } else {
+                  setCompanyCompletedEarly(false);
+                  setCompany(null);
                   setStep('teamPrimaryRole');
                 }
               }
@@ -130,12 +158,91 @@ const OnboardingFlow = () => {
             userName={name}
           />
         );
+      case 'companyEarly':
+        return (
+          <CompanySelectionScreen
+            title={config.company.title}
+            subtitle={config.company.subtitle}
+            options={config.company.options}
+            selectedOption={company}
+            onSelect={(value) => setCompany(value)}
+            onBack={() => {
+              setCompanyCompletedEarly(false);
+              setCompany(null);
+              setStep('intent');
+            }}
+            onNext={() => {
+              if (company) {
+                setCompanyCompletedEarly(true);
+                setStep('teamPrimaryRole');
+              }
+            }}
+            progressActive={companyEarlyProgress}
+            progressTotal={PROGRESS_TOTAL}
+          />
+        );
       case 'teamPrimaryRole':
         return (
           <RoleSelectionScreen
             title="Which of the following best describes your role?"
             subtitle="We’ll tailor Dusky to the kind of work you do."
             options={[
+              {
+                id: 'marketing',
+                label: 'Marketing',
+                icon: (
+                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="megaphoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FFA65B" />
+                        <stop offset="100%" stopColor="#FF6B2C" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M14 26l26-12v36L14 38V26Z"
+                      fill="url(#megaphoneGradient)"
+                      stroke="#F06D2F"
+                      strokeWidth="2"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M40 19l10-5v32l-10-5"
+                      stroke="#FF8E3F"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      opacity="0.8"
+                    />
+                    <path
+                      d="M18 40l4 8"
+                      stroke="#FF934D"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      opacity="0.7"
+                    />
+                  </svg>
+                ),
+              },
+              {
+                id: 'creator',
+                label: 'Creator',
+                icon: (
+                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="paletteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FF8BA7" />
+                        <stop offset="100%" stopColor="#FF6F61" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M32 10c11.6 0 21 7.8 21 17.5 0 6.2-4 8.5-8 8.5-3.2 0-5 1.8-5 4.5 0 3 2.5 5.5 5.5 5.5-3.8 5.1-9.6 8-15.5 8C18.9 54 11 46.3 11 36.5S20.4 10 32 10Z"
+                      fill="url(#paletteGradient)"
+                    />
+                    <circle cx="24" cy="26" r="3" fill="#FFE28A" />
+                    <circle cx="32" cy="22" r="3" fill="#9AD6FF" />
+                    <circle cx="40" cy="26" r="3" fill="#C3F4A6" />
+                  </svg>
+                ),
+              },
               {
                 id: 'consultant',
                 label: 'Consultant',
@@ -168,41 +275,6 @@ const OnboardingFlow = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       opacity="0.5"
-                    />
-                  </svg>
-                ),
-              },
-              {
-                id: 'marketing',
-                label: 'Marketing',
-                icon: (
-                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="megaphoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#FFA65B" />
-                        <stop offset="100%" stopColor="#FF6B2C" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M14 26l26-12v36L14 38V26Z"
-                      fill="url(#megaphoneGradient)"
-                      stroke="#F06D2F"
-                      strokeWidth="2"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M40 19l10-5v32l-10-5"
-                      stroke="#FF8E3F"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      opacity="0.8"
-                    />
-                    <path
-                      d="M18 40l4 8"
-                      stroke="#FF934D"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      opacity="0.7"
                     />
                   </svg>
                 ),
@@ -344,28 +416,8 @@ const OnboardingFlow = () => {
                 ),
               },
               {
-                id: 'creator',
-                label: 'Creator',
-                icon: (
-                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="paletteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#FF8BA7" />
-                        <stop offset="100%" stopColor="#FF6F61" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M32 10c11.6 0 21 7.8 21 17.5 0 6.2-4 8.5-8 8.5-3.2 0-5 1.8-5 4.5 0 3 2.5 5.5 5.5 5.5-3.8 5.1-9.6 8-15.5 8C18.9 54 11 46.3 11 36.5S20.4 10 32 10Z"
-                      fill="url(#paletteGradient)"
-                    />
-                    <circle cx="24" cy="26" r="3" fill="#FFE28A" />
-                    <circle cx="32" cy="22" r="3" fill="#9AD6FF" />
-                    <circle cx="40" cy="26" r="3" fill="#C3F4A6" />
-                  </svg>
-                ),
-              },
-              {
                 id: 'molecule',
+                label: 'Science & R&D',
                 icon: (
                   <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
                     <circle cx="20" cy="20" r="8" fill="#6EE7B7" />
@@ -384,6 +436,7 @@ const OnboardingFlow = () => {
               },
               {
                 id: 'more',
+                label: 'Others',
                 icon: (
                   <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
                     <circle cx="22" cy="32" r="5" fill="#9CA3AF" />
@@ -393,7 +446,12 @@ const OnboardingFlow = () => {
                 ),
               },
             ]}
-            onBack={() => setStep('intent')}
+            onBack={() => {
+              if (intent === 'work') {
+                setCompanyCompletedEarly(true);
+              }
+              setStep('intent');
+            }}
             onNext={(roleId) => {
               if (roleId) {
                 setTeamSize(null);
@@ -529,27 +587,9 @@ const OnboardingFlow = () => {
             onBack={() => setStep('goals')}
             onNext={(selected) => {
               setReferrals(selected);
-              setStep('teamSecondary');
+              setStep('challenge');
             }}
             progressActive={referralProgress}
-            progressTotal={PROGRESS_TOTAL}
-          />
-        );
-      case 'teamSecondary':
-        return (
-          <CompanySelectionScreen
-            title={config.company.title}
-            subtitle={config.company.subtitle}
-            options={config.company.options}
-            selectedOption={teamSecondary}
-            onSelect={(value) => setTeamSecondary(value)}
-            onBack={() => setStep('referral')}
-            onNext={() => {
-              if (teamSecondary) {
-                setStep('challenge');
-              }
-            }}
-            progressActive={companyProgress}
             progressTotal={PROGRESS_TOTAL}
           />
         );

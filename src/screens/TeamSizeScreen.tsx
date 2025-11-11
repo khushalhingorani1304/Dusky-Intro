@@ -175,8 +175,6 @@ const TeamSizeScreen: React.FC<TeamSizeScreenProps> = ({
 }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const segments = 6;
-
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] py-20 px-6">
       <div className="w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-14 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
@@ -187,18 +185,6 @@ const TeamSizeScreen: React.FC<TeamSizeScreenProps> = ({
           >
             ← Back
           </button>
-          <div className="flex flex-1 justify-center">
-            <div className="flex gap-2">
-              {Array.from({ length: segments }).map((_, index) => (
-                <span
-                  key={index}
-                  className={`h-1.5 w-12 rounded-full transition ${
-                    index < Math.min(progressActive, segments) ? 'bg-[#6C4DF5]' : 'bg-[#DDD9F2]'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
           <span className="w-12" />
         </div>
 

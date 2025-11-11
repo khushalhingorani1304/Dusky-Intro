@@ -29,7 +29,6 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
   progressTotal = 12,
 }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const segments = 6;
 
   const handleSelect = (option: RoleOption) => {
     if (option.disabled) return;
@@ -46,20 +45,6 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
           >
             ← Back
           </button>
-          <div className="flex flex-1 justify-center">
-            <div className="flex gap-2">
-              {Array.from({ length: segments }).map((_, index) => (
-                <span
-                  key={index}
-                  className={`h-1.5 w-12 rounded-full transition ${
-                    index < Math.min(progressActive, segments)
-                      ? 'bg-[#6C4DF5]'
-                      : 'bg-[#DDD9F2]'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
           <span className="w-12" />
         </div>
 

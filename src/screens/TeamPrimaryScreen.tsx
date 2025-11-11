@@ -62,18 +62,6 @@ export const TeamPrimaryScreen: React.FC<TeamPrimaryScreenProps> = ({
 
   return (
     <div ref={containerRef} className="flex flex-col items-center min-h-screen bg-dusky-flow">
-      <div className="w-full flex justify-center pt-8 pb-[1.6rem]">
-        <div className="flex gap-[0.4rem]" style={{ width: '50%', maxWidth: '25.2rem' }}>
-          {Array.from({ length: progressTotal }).map((_, index) => (
-            <div
-              key={index}
-              className={`h-[0.3rem] flex-1 rounded-full ${
-                index < progressActive ? 'bg-purple-600' : 'bg-gray-200'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
       <div className="max-w-[50.4rem] w-full px-6 flex-1 flex items-center mt-[6rem]">
         <div className="w-full">
           <div className="flex justify-start mb-8 team-logo">

@@ -16,11 +16,7 @@ const LOADING_STEPS = [
   'Adding sources to your canvas...',
 ];
 
-export const LoadingScreen: React.FC<LoadingScreenProps> = ({
-  onComplete,
-  progressActive = 0,
-  progressTotal = 12,
-}) => {
+export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
@@ -82,43 +78,61 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
   }, [onComplete]);
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center min-h-screen bg-dusky-flow">
-      <div className="w-full flex justify-center pt-8 pb-[1.6rem]">
-        <div className="flex gap-[0.4rem]" style={{ width: '50%', maxWidth: '25.2rem' }}>
-          {Array.from({ length: progressTotal }).map((_, index) => (
-            <div
-              key={index}
-              className={`h-[0.3rem] flex-1 rounded-full ${
-                index < progressActive ? 'bg-purple-600' : 'bg-gray-200'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="max-w-[50.4rem] w-full px-6 flex-1 flex items-center -mt-[1.3rem]">
-        <div className="w-full">
-          <div className="flex justify-start mb-8 loading-logo">
-            <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-              <RectangleStackIcon className="w-8 h-8 text-white" />
-            </div>
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.08),transparent_60%)]" />
+      <div
+        ref={containerRef}
+        className="relative w-full max-w-4xl rounded-[36px] border border-white/40 bg-white px-10 py-16 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]"
+      >
+        <div className="loading-logo flex justify-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#3B82F6] shadow-lg shadow-[#3B82F6]/40">
+            <RectangleStackIcon className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="space-y-4">
+        </div>
+
+        <div className="mt-12 space-y-6">
           {LOADING_STEPS.map((step, index) => {
             const isCompleted = completedSteps.includes(index);
+            const isCurrent = !isCompleted && completedSteps.length === index;
 
             return (
-              <div key={index} className={`flex items-center gap-3 loading-step-${index}`}>
-                <div className="flex-shrink-0 text-purple-600 drop-shadow-[0_0_10px_rgba(147,51,234,0.6)] animate-pulse">
-                  <CheckIcon className="w-6 h-6" />
+              <div
+                key={index}
+                className={`loading-step-${index} flex items-center justify-between rounded-[24px] border px-6 py-4 transition ${
+                  isCompleted || isCurrent
+                    ? 'border-[#6C4DF5]/60 bg-[#F5F2FF]'
+                    : 'border-[#E0DEF5] bg-white'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-[#6C4DF5] drop-shadow-[0_0_10px_rgba(147,51,234,0.35)] animate-pulse ${
+                      isCompleted || isCurrent ? 'bg-[#F2F0FF]' : 'bg-[#F7F5FF]'
+                    }`}
+                  >
+                    <CheckIcon className="h-5 w-5" />
+                  </span>
+                  <span
+                    className={`text-lg font-medium ${
+                      isCompleted
+                        ? 'text-[#1F1B3A]'
+                        : isCurrent
+                        ? 'text-[#4F46E5]'
+                        : 'text-[#9A96C7]'
+                    }`}
+                  >
+                    {step}
+                  </span>
                 </div>
-                <div className={`text-lg ${isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {step}
-                </div>
+                <div
+                  className={`h-2 w-16 rounded-full transition ${
+                    isCompleted || isCurrent ? 'bg-[#6C4DF5]' : 'bg-[#DDD9F2]'
+                  }`}
+                />
               </div>
             );
           })}
-          </div>
         </div>
       </div>
     </div>

@@ -115,27 +115,11 @@ const IntentSelectionScreen: React.FC<IntentSelectionScreenProps> = ({
     ? `${displayName}, how do you plan to use Dusky?`
     : 'How do you plan to use Dusky?';
 
-  const progressSegments = 6;
-
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F6F7FB] py-20 px-6">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.12),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(56,189,248,0.08),transparent_55%)]" />
       <div className="relative w-full max-w-6xl rounded-[32px] border border-white/40 bg-white/80 px-8 py-14 shadow-[0_28px_65px_-30px_rgba(15,23,42,0.35)] backdrop-blur-2xl md:px-16">
-        <div className="flex justify-center pb-12">
-          <div className="flex w-full max-w-xl items-center justify-center gap-3">
-            {Array.from({ length: progressSegments }).map((_, index) => (
-              <span
-                key={index}
-                className={`h-1.5 w-12 rounded-full transition-all ${
-                  index === Math.min(Math.max(progressActive - 1, 0), progressSegments - 1)
-                    ? 'bg-[#6C4DF5]'
-                    : 'bg-white/60'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold tracking-tight text-[#1A1A1A] md:text-4xl">
             {heading}
