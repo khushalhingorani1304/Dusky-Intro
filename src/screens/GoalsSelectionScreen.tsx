@@ -69,10 +69,10 @@ const GoalsSelectionScreen: React.FC<GoalsSelectionScreenProps> = ({
                     : 'border-[#E0DEF5] bg-white shadow-sm'
                 }`}
               >
-                <div className="flex items-center justify_between">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-3xl">{option.icon}</span>
                   <span
-                    className={`flex h-6 w-6 items-center justify-center rounded-md border text-xs font-bold ${
+                    className={`flex h-6 w-6 items-center justify-center rounded-md border text-xs font-bold flex-shrink-0 ${
                       isSelected ? 'border-[#6C4DF5] bg-[#6C4DF5] text-white' : 'border-[#E0DEF5] bg-white text-[#B5B2D9]'
                     }`}
                   >

@@ -100,15 +100,21 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
               <div
                 key={index}
                 className={`loading-step-${index} flex items-center justify-between rounded-[24px] border px-6 py-4 transition ${
-                  isCompleted || isCurrent
+                  isCurrent
                     ? 'border-[#6C4DF5]/60 bg-[#F5F2FF]'
+                    : isCompleted
+                    ? 'border-[#6C4DF5]/30 bg-[#F5F2FF]/50'
                     : 'border-[#E0DEF5] bg-white'
                 }`}
               >
                 <div className="flex items-center gap-4">
                   <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-[#6C4DF5] drop-shadow-[0_0_10px_rgba(147,51,234,0.35)] animate-pulse ${
-                      isCompleted || isCurrent ? 'bg-[#F2F0FF]' : 'bg-[#F7F5FF]'
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-[#6C4DF5] ${
+                      isCurrent
+                        ? 'bg-[#F2F0FF] drop-shadow-[0_0_10px_rgba(108,77,245,0.5)] animate-pulse'
+                        : isCompleted
+                        ? 'bg-[#F2F0FF]'
+                        : 'bg-[#F7F5FF]'
                     }`}
                   >
                     <CheckIcon className="h-5 w-5" />
@@ -118,7 +124,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                       isCompleted
                         ? 'text-[#1F1B3A]'
                         : isCurrent
-                        ? 'text-[#4F46E5]'
+                        ? 'text-[#6C4DF5]'
                         : 'text-[#9A96C7]'
                     }`}
                   >
@@ -127,7 +133,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                 </div>
                 <div
                   className={`h-2 w-16 rounded-full transition ${
-                    isCompleted || isCurrent ? 'bg-[#6C4DF5]' : 'bg-[#DDD9F2]'
+                    isCurrent ? 'bg-[#6C4DF5] animate-pulse' : isCompleted ? 'bg-[#6C4DF5]/50' : 'bg-[#DDD9F2]'
                   }`}
                 />
               </div>
