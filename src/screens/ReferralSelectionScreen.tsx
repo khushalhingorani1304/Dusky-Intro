@@ -2,7 +2,7 @@ import React from 'react';
 import { PrimaryButton } from '../components/PrimaryButton';
 
 // Import icon images
-import InstaFacebookIcon from '../../Icons/Insta&Facebook.png';
+import InstaIcon from '../../Icons/Insta.png';
 import YtIcon from '../../Icons/Yt.png';
 import GoogleIcon from '../../Icons/Google.png';
 import LinkedinIcon from '../../Icons/Linkedin.png';
@@ -35,7 +35,7 @@ const ReferralSelectionScreen: React.FC<ReferralSelectionScreenProps> = ({
 }) => {
   const REFERRAL_OPTIONS: ReferralOption[] = [
     { id: 'friend', label: 'Friend or colleague', icon: <img src={FriendsIcon} alt="Friends" className="h-8 w-8 object-contain" />},
-    { id: 'social', label: 'Instagram or Facebook', icon: <img src={InstaFacebookIcon} alt="Instagram/Facebook" className="h-8 w-8 object-contain" /> },
+    { id: 'social', label: 'Instagram', icon: <img src={InstaIcon} alt="Instagram" className="h-8 w-8 object-contain" /> },
     { id: 'youtube', label: 'YouTube', icon: <img src={YtIcon} alt="YouTube" className="h-8 w-8 object-contain" /> },
     { id: 'tiktok', label: 'TikTok', icon: <img src={TiktokIcon} alt="TikTok" className="h-8 w-8 object-contain" /> },
     { id: 'search', label: 'Google or other search', icon: <img src={GoogleIcon} alt="Google" className="h-8 w-8 object-contain" /> },
