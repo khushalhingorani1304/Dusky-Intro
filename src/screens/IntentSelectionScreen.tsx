@@ -116,7 +116,7 @@ const IntentSelectionScreen: React.FC<IntentSelectionScreenProps> = ({
     : 'How do you plan to use Dusky?';
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F6F7FB] py-20 px-6">
+    <div className="relative flex min-h-screen w-full items-start justify-center bg-[#F6F7FB] py-20 px-6">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.12),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(56,189,248,0.08),transparent_55%)]" />
       <div className="relative w-full max-w-6xl rounded-[32px] border border-white/40 bg-white/80 px-8 py-14 shadow-[0_28px_65px_-30px_rgba(15,23,42,0.35)] backdrop-blur-2xl md:px-16">
@@ -128,7 +128,7 @@ const IntentSelectionScreen: React.FC<IntentSelectionScreenProps> = ({
             We use your answers to personalize your experience.
           </p>
         </div>
-        <div className="mt-16 grid gap-10 md:grid-cols-3">
+        <div className="mt-8 grid gap-10 md:grid-cols-3">
           {OPTIONS.map((option) => {
             const isSelected = selectedId === option.id;
             return (
@@ -136,7 +136,7 @@ const IntentSelectionScreen: React.FC<IntentSelectionScreenProps> = ({
                 key={option.id}
                 type="button"
                 onClick={() => handleSelect(option.id)}
-                className={`group relative flex flex-col items-center overflow-hidden rounded-[28px] border bg-white/60 p-10 shadow-[0px_10px_30px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 ease-out focus:outline-none focus:ring-4 focus:ring-white/30 ${
+                className={`group relative flex flex-col items-center h-120 overflow-hidden rounded-[28px] border bg-white/60 p-10 shadow-[0px_10px_30px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 ease-out focus:outline-none focus:ring-4 focus:ring-white/30 ${
                   isSelected
                     ? 'border-2 border-white/80 shadow-[0_18px_55px_-20px_rgba(108,77,245,0.6)]'
                     : 'border border-white/30 hover:border-white/70 hover:shadow-[0_20px_45px_-25px_rgba(108,77,245,0.5)]'
@@ -148,7 +148,7 @@ const IntentSelectionScreen: React.FC<IntentSelectionScreenProps> = ({
                     {option.illustration}
                   </div>
                 </div>
-                <div className="mt-12 text-center">
+                <div className="mt-4 mb-2 text-center">
                   <h3 className="text-lg font-semibold text-[#1A1A1A] md:text-xl">
                     {option.title}
                   </h3>

@@ -261,7 +261,7 @@ export const CompanySelectionScreen: React.FC<CompanySelectionScreenProps> = ({
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-20">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-2">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.12),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.1),transparent_60%)]" />
       <div
@@ -278,8 +278,8 @@ export const CompanySelectionScreen: React.FC<CompanySelectionScreenProps> = ({
           <span className="w-12" />
         </div>
 
-        <div className="company-header mt-10 text-center space-y-3">
-          <h2 className="text-3xl font-bold text-[#1A1A1A] md:text-4xl">{title}</h2>
+        <div className="company-header  mt-4 text-center space-y-3">
+          <h2 className="text-2xl font-bold text-[#1A1A1A] md:text-4xl">{title}</h2>
           <p className="text-base text-[#6F6C8F]">{subtitle}</p>
         </div>
 
@@ -297,7 +297,7 @@ export const CompanySelectionScreen: React.FC<CompanySelectionScreenProps> = ({
               <button
                 key={option.id}
                 onClick={() => handleSelect(option.id)}
-                className={`group flex flex-col items-center rounded-[28px] bg-white/90 px-8 py-8 text-center transition-all duration-300 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#6C4DF5]/35 ${borderStyles} ${shadowStyles} hover:-translate-y-1 hover:border-[#6C4DF5] hover:shadow-[0_26px_52px_-30px_rgba(108,77,245,0.55)]`}
+                className={`group flex flex-col items-center h-[90%] rounded-[28px] bg-white/90 px-8 py-4 text-center transition-all duration-300 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#6C4DF5]/35 ${borderStyles} ${shadowStyles} hover:-translate-y-1 hover:border-[#6C4DF5] hover:shadow-[0_26px_52px_-30px_rgba(108,77,245,0.55)]`}
               >
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F2F0FF] text-[#6C4DF5]">
                   {optionIcons[option.id] ?? (
@@ -312,7 +312,7 @@ export const CompanySelectionScreen: React.FC<CompanySelectionScreenProps> = ({
           })}
         </div>
 
-        <div className="company-actions mt-12 flex justify-center">
+        <div className="company-actions mt-6 flex justify-center">
           <PrimaryButton onClick={handleNext} className="px-10" disabled={!selectedOption}>
             Next
           </PrimaryButton>

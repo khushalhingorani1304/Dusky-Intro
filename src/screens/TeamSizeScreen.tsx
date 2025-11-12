@@ -176,8 +176,8 @@ const TeamSizeScreen: React.FC<TeamSizeScreenProps> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] py-20 px-6">
-      <div className="w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-14 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] py-6 px-6">
+      <div className="w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-6 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
         <div className="flex items-center justify-between">
           <button
             onClick={onBack}
@@ -221,7 +221,7 @@ const TeamSizeScreen: React.FC<TeamSizeScreenProps> = ({
           })}
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <PrimaryButton onClick={() => onNext(selectedId)} disabled={!selectedId} className="px-10">
             Continue
           </PrimaryButton>

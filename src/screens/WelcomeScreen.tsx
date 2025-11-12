@@ -96,7 +96,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F6F7FB] px-6 py-20">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F6F7FB] px-6 py-6">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.16),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.12),transparent_60%)]" />
       <div

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PrimaryButton } from '../components/PrimaryButton';
 
-export interface RoleOption {
+export interface EducationRoleOption {
   id: string;
   label?: string;
   description?: string;
@@ -9,17 +9,17 @@ export interface RoleOption {
   disabled?: boolean;
 }
 
-interface RoleSelectionScreenProps {
+interface EducationRoleSelectionScreenProps {
   title: string;
   subtitle?: string;
-  options: RoleOption[];
+  options: EducationRoleOption[];
   onBack: () => void;
   onNext: (roleId: string | null) => void;
   progressActive?: number;
   progressTotal?: number;
 }
 
-const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
+const EducationRoleSelectionScreen: React.FC<EducationRoleSelectionScreenProps> = ({
   title,
   subtitle,
   options,
@@ -30,14 +30,14 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
 }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const handleSelect = (option: RoleOption) => {
+  const handleSelect = (option: EducationRoleOption) => {
     if (option.disabled) return;
     setSelectedId(option.id);
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] py-6 px-6">
-      <div className="w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-8 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] py-20 px-6">
+      <div className="w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-14 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
         <div className="flex items-center justify-between">
           <button
             onClick={onBack}
@@ -48,12 +48,13 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
           <span className="w-12" />
         </div>
 
-        <div className="mt-2 text-center space-y-3">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] md:text-4xl">{title}</h1>
+        <div className="mt-10 text-center space-y-3">
+          <h1 className="text-3xl font-bold text-[#1A1A1A] md:text-4xl">{title}</h1>
           {subtitle && <p className="text-base text-[#6F6C8F]">{subtitle}</p>}
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+       <div className="mt-12 flex flex-wrap gap-6 md:justify-between lg:justify-center lg:gap-24">
+
           {options.map((option) => {
             const isSelected = selectedId === option.id;
             const borderStyles = isSelected
@@ -68,7 +69,7 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
                 type="button"
                 onClick={() => handleSelect(option)}
                 disabled={option.disabled}
-                className={`group flex flex-col items-center h-[90%] rounded-[28px] bg-white p-8 text-center transition-all duration-300 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#6C4DF5]/40 ${
+                className={`group flex flex-col items-center rounded-[28px] w-64 bg-white p-8 text-center transition-all duration-300 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#6C4DF5]/40 ${
                   option.disabled ? '' : 'hover:-translate-y-1'
                 } ${borderStyles} ${shadowStyles} ${
                   option.disabled
@@ -92,7 +93,7 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
           })}
         </div>
 
-        <div className="mt-6 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <PrimaryButton onClick={() => onNext(selectedId)} disabled={!selectedId} className="px-10">
             Continue
           </PrimaryButton>
@@ -102,4 +103,5 @@ const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({
   );
 };
 
-export default RoleSelectionScreen;
+export default EducationRoleSelectionScreen;
+

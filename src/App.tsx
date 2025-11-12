@@ -5,6 +5,9 @@ import gsap from 'gsap';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import IntentSelectionScreen from './screens/IntentSelectionScreen';
 import RoleSelectionScreen from './screens/RoleSelectionScreen';
+import EducationRoleSelectionScreen from './screens/EducationRoleSelectionScreen';
+import EducatorDetailSelectionScreen from './screens/EducatorDetailSelectionScreen';
+import StudentDetailSelectionScreen from './screens/StudentDetailSelectionScreen';
 import TeamSizeScreen from './screens/TeamSizeScreen';
 import GoalsSelectionScreen from './screens/GoalsSelectionScreen';
 import ReferralSelectionScreen from './screens/ReferralSelectionScreen';
@@ -302,57 +305,20 @@ const OnboardingFlow = () => {
                 ),
               },
               {
-                id: 'support',
-                label: 'Customer support',
+                id: 'ops',
+                label: 'Ops and Finance',
                 icon: (
                   <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="headsetGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#C9CEDA" />
-                        <stop offset="100%" stopColor="#7E8492" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="32" cy="28" r="14" fill="url(#headsetGradient)" />
+                    <rect x="16" y="24" width="8" height="24" rx="3" fill="#FF7FAA" />
+                    <rect x="28" y="18" width="8" height="30" rx="3" fill="#55C8FF" />
+                    <rect x="40" y="30" width="8" height="18" rx="3" fill="#6EE7B7" />
                     <path
-                      d="M20 28h-4a6 6 0 000 12h3"
-                      stroke="#8A90A1"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M44 28h4a6 6 0 110 12h-3"
-                      stroke="#8A90A1"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M28 46h8"
-                      stroke="#6F7481"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      opacity="0.8"
-                    />
-                  </svg>
-                ),
-              },
-              {
-                id: 'people',
-                label: 'People or Legal',
-                icon: (
-                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="peopleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#FFD68A" />
-                        <stop offset="100%" stopColor="#D08E34" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="32" cy="22" r="12" fill="url(#peopleGradient)" />
-                    <path
-                      d="M18 48c2-8 8-12 14-12s12 4 14 12"
-                      stroke="#E3A347"
+                      d="M18 22l12-8 12 6 6-8"
+                      stroke="#7E7BFF"
                       strokeWidth="4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      opacity="0.7"
                     />
                   </svg>
                 ),
@@ -393,44 +359,6 @@ const OnboardingFlow = () => {
                     <rect x="18" y="22" width="28" height="16" rx="4" fill="#E3EEFF" opacity="0.9" />
                     <rect x="26" y="44" width="12" height="6" rx="2" fill="#2B58D1" opacity="0.7" />
                     <rect x="24" y="48" width="16" height="4" rx="2" fill="#274CB5" opacity="0.6" />
-                  </svg>
-                ),
-              },
-              {
-                id: 'ops',
-                label: 'Ops and Finance',
-                icon: (
-                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <rect x="16" y="24" width="8" height="24" rx="3" fill="#FF7FAA" />
-                    <rect x="28" y="18" width="8" height="30" rx="3" fill="#55C8FF" />
-                    <rect x="40" y="30" width="8" height="18" rx="3" fill="#6EE7B7" />
-                    <path
-                      d="M18 22l12-8 12 6 6-8"
-                      stroke="#7E7BFF"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      opacity="0.7"
-                    />
-                  </svg>
-                ),
-              },
-              {
-                id: 'molecule',
-                label: 'Science & R&D',
-                icon: (
-                  <svg viewBox="0 0 64 64" className="h-10 w-10" aria-hidden="true">
-                    <circle cx="20" cy="20" r="8" fill="#6EE7B7" />
-                    <circle cx="44" cy="20" r="6" fill="#34D399" />
-                    <circle cx="32" cy="40" r="10" fill="#10B981" opacity="0.85" />
-                    <path
-                      d="M20 20l12 20 12-20"
-                      stroke="#059669"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      opacity="0.6"
-                    />
                   </svg>
                 ),
               },
@@ -479,7 +407,7 @@ const OnboardingFlow = () => {
         );
       case 'educationRole':
         return (
-          <RoleSelectionScreen
+          <EducationRoleSelectionScreen
             title="Which of the following best describes you?"
             options={[
               { id: 'educator', label: 'Educator', icon: '🧑‍🏫' },
@@ -502,7 +430,7 @@ const OnboardingFlow = () => {
         );
       case 'educatorDetail':
         return (
-          <RoleSelectionScreen
+          <EducatorDetailSelectionScreen
             title="Which of the following best describes you?"
             options={[
               { id: 'elementary-teacher', label: 'Elementary or secondary school teacher', icon: '🍎' },
@@ -524,7 +452,7 @@ const OnboardingFlow = () => {
         );
       case 'studentDetail':
         return (
-          <RoleSelectionScreen
+          <StudentDetailSelectionScreen
             title="What type of student are you?"
             options={[
               { id: 'high-school', label: 'High school', icon: '🌱' },

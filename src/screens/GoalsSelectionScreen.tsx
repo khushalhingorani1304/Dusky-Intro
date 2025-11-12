@@ -37,10 +37,10 @@ const GoalsSelectionScreen: React.FC<GoalsSelectionScreenProps> = ({
   const hasSelection = selectedGoals.length > 0;
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-20">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#F8F7FF] px-6 py-6">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,116,255,0.12),transparent_55%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(45,212,191,0.08),transparent_60%)]" />
-      <div className="relative w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-14 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
+      <div className="relative w-full max-w-5xl rounded-[36px] border border-white/40 bg-white px-10 py-6 shadow-[0_28px_60px_-32px_rgba(63,55,146,0.32)]">
         <div className="flex items-center justify-between">
           <button
             onClick={onBack}
@@ -85,7 +85,7 @@ const GoalsSelectionScreen: React.FC<GoalsSelectionScreenProps> = ({
           })}
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <PrimaryButton onClick={() => onNext(selectedGoals)} disabled={!hasSelection} className="px-10">
             Continue
           </PrimaryButton>
