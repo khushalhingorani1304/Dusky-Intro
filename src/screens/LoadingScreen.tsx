@@ -94,7 +94,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         <div className="mt-12 space-y-6">
           {LOADING_STEPS.map((step, index) => {
             const isCompleted = completedSteps.includes(index);
-            const isCurrent = !isCompleted && completedSteps.length === index;
+            // Only the step that matches the current index (completedSteps.length) should be current
+            const isCurrent = completedSteps.length === index && !isCompleted;
 
             return (
               <div
@@ -111,11 +112,20 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                   <span
                     className={`flex h-10 w-10 items-center justify-center rounded-full text-[#6C4DF5] ${
                       isCurrent
-                        ? 'bg-[#F2F0FF] drop-shadow-[0_0_10px_rgba(108,77,245,0.5)] animate-pulse'
+                        ? 'bg-[#F2F0FF] animate-pulse'
                         : isCompleted
                         ? 'bg-[#F2F0FF]'
                         : 'bg-[#F7F5FF]'
                     }`}
+                    style={
+                      isCurrent
+                        ? {
+                            filter: 'drop-shadow(0 0 10px rgba(108, 77, 245, 0.5))',
+                          }
+                        : {
+                            filter: 'none',
+                          }
+                    }
                   >
                     <CheckIcon className="h-5 w-5" />
                   </span>
